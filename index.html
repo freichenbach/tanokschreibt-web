@@ -3,26 +3,204 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tanok schreibt</title>
+<title>Tanok schreibt — Wörter hören und tippen</title>
+<meta name="description" content="Eine ruhige iPad-App zum Üben einzelner Wörter auf der Tastatur. Ohne Werbung, ohne Konto, ohne Internet.">
 <style>
-  :root { color-scheme: light dark; }
-  body {
-    font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    max-width: 34rem; margin: 0 auto; padding: 4rem 1.25rem;
+  /* Die Farben der App, damit die Seite und der Bildschirm zusammengehören. */
+  :root {
+    color-scheme: light dark;
+    --blue: #2f6fa8;
+    --teal: #2a9d8f;
+    --yellow: #e0a33e;
+    --ink: #1d2530;
+    --muted: #5a6673;
+    --ground: #f7f8fa;
+    --card: #ffffff;
+    --line: rgba(29, 37, 48, .12);
   }
-  h1 { font-size: 1.8rem; margin-bottom: .25rem; }
-  p.lead { opacity: .8; margin-top: 0; }
-  ul { padding-left: 1.1rem; }
-  li { margin: .4rem 0; }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #eef1f5;
+      --muted: #a3adba;
+      --ground: #14181d;
+      --card: #1c2128;
+      --line: rgba(238, 241, 245, .14);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font: 17px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 62rem; margin: 0 auto; padding: 0 1.25rem; }
+
+  header { padding: 4.5rem 0 3rem; text-align: center; }
+  .mark {
+    width: 84px; height: 84px; margin: 0 auto 1.5rem;
+    border-radius: 20px; display: grid; place-items: center;
+    background: linear-gradient(160deg, var(--blue), var(--teal));
+    color: #fff; font-size: 40px; font-weight: 800; letter-spacing: -.04em;
+  }
+  h1 { font-size: clamp(2.1rem, 6vw, 3rem); line-height: 1.1; margin: 0 0 .6rem; letter-spacing: -.02em; }
+  .claim { font-size: clamp(1.05rem, 2.6vw, 1.3rem); color: var(--muted); margin: 0 auto; max-width: 34rem; }
+  .badge {
+    display: inline-block; margin-top: 1.6rem; padding: .45rem 1rem;
+    border: 1px solid var(--line); border-radius: 999px;
+    font-size: .95rem; color: var(--muted);
+  }
+
+  section { padding: 3rem 0; }
+  h2 { font-size: 1.5rem; margin: 0 0 1.5rem; letter-spacing: -.01em; }
+
+  .shots {
+    display: grid; gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  }
+  figure { margin: 0; }
+  .shots img {
+    width: 100%; height: auto; display: block;
+    border-radius: 14px; border: 1px solid var(--line);
+    background: var(--card);
+  }
+  figcaption { margin-top: .7rem; font-size: .95rem; color: var(--muted); }
+
+  .points { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+  .point { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 1.4rem; }
+  .point h3 { margin: 0 0 .5rem; font-size: 1.08rem; }
+  .point p { margin: 0; color: var(--muted); font-size: .97rem; }
+
+  .quiet {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 1.6rem 1.75rem;
+  }
+  .quiet ul { margin: .8rem 0 0; padding-left: 1.15rem; color: var(--muted); }
+  .quiet li { margin: .35rem 0; }
+
+  .price { text-align: center; }
+  .price .amount { font-size: 2.2rem; font-weight: 700; letter-spacing: -.02em; }
+  .price p { color: var(--muted); max-width: 34rem; margin: .6rem auto 0; }
+
+  footer {
+    margin-top: 2rem; padding: 2.5rem 0 3.5rem;
+    border-top: 1px solid var(--line); color: var(--muted); font-size: .95rem;
+    display: flex; flex-wrap: wrap; gap: 1.25rem; justify-content: space-between;
+  }
+  footer a { color: var(--blue); }
+  @media (prefers-color-scheme: dark) { footer a { color: #6fb0e6; } }
+  footer nav { display: flex; gap: 1.25rem; flex-wrap: wrap; }
 </style>
 </head>
 <body>
-<h1>Tanok schreibt</h1>
-<p class="lead">Eine iPad-App zum Üben des Schreibens einzelner Wörter.</p>
-<p class="lead">Deutsch · English · Español · Français · Italiano</p>
-<ul>
-  <li><a href="support.html">Hilfe und Kontakt</a></li>
-  <li><a href="datenschutz.html">Datenschutz</a></li>
-</ul>
+
+<div class="wrap">
+
+  <header>
+    <div class="mark">Ta</div>
+    <h1>Tanok schreibt</h1>
+    <p class="claim">
+      Ein Wort hören, es Buchstabe für Buchstabe tippen, am Ende ein Feuerwerk.
+      Eine ruhige App fürs iPad, die nichts will ausser Üben.
+    </p>
+    <p class="badge">Für iPad · Deutsch, English, Español, Français, Italiano</p>
+  </header>
+
+  <section>
+    <div class="shots">
+      <figure>
+        <img src="img/01-uebung.png" alt="Das Wort EIMER, der erste Buchstabe ist hervorgehoben, darunter die Tastatur." width="620" height="827">
+        <figcaption>Jeder Buchstabe wird sofort geprüft. Das Wort läuft nicht davon.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/02-feier.png" alt="Nach dem Wort KEKSE fliegen Kekse über den Bildschirm." width="620" height="827">
+        <figcaption>Am Ende eine grosse Feier — die Figuren passen zum Wort.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/03-ordner.png" alt="Ein Ordner mit den Wörtern EI, EIS, EIMER, EICHE und EICHHÖRNCHEN." width="620" height="827">
+        <figcaption>Eigene Ordner und Wörter, jedes mit Bild, Sprache und Stimme.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/05-fortschritt.png" alt="Eine Liste mit Versuchen, Erfolgsquote und Serie je Wort." width="620" height="827">
+        <figcaption>Für die Eltern: was geübt wurde, wie oft und wie sicher.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>Wie es funktioniert</h2>
+    <div class="points">
+      <div class="point">
+        <h3>Hören, dann schreiben</h3>
+        <p>Die App liest ein Wort vor, das Kind tippt es. Richtiges bleibt stehen,
+           Falsches wackelt kurz und ist wieder weg. Keine Uhr, keine Punkte,
+           keine Gegner.</p>
+      </div>
+      <div class="point">
+        <h3>Vier Hilfestufen</h3>
+        <p>Vom pulsierenden nächsten Buchstaben bis zur reinen Stimme. Jedes Wort
+           hat seine eigene Stufe, und acht Schalter bestimmen, was jede Stufe
+           zeigt und sagt.</p>
+      </div>
+      <div class="point">
+        <h3>Die Hilfe zieht sich zurück</h3>
+        <p>Wenn ein Wort mehrmals an verschiedenen Tagen sitzt, wird die Hilfe von
+           selbst weniger. Wer das nicht will, stellt jede Stufe von Hand.</p>
+      </div>
+      <div class="point">
+        <h3>Eigene Wörter</h3>
+        <p>Ordner anlegen, Wörter mit Emoji oder eigenem Foto versehen, Sprache und
+           Stimme je Wort wählen. Namen, Lieblingsdinge, was gerade dran ist.</p>
+      </div>
+      <div class="point">
+        <h3>Fortschritt, der zählt</h3>
+        <p>Ein Wort gilt erst als sicher, wenn es an mehreren <em>verschiedenen</em>
+           Tagen sass. Fünf Treffer in einer Minute sind nicht dasselbe wie fünf
+           Treffer an fünf Tagen.</p>
+      </div>
+      <div class="point">
+        <h3>Sichern und Einlesen</h3>
+        <p>Ordner, Wörter, Bilder und der ganze Fortschritt passen in eine Datei.
+           Beim Wechsel auf ein neues iPad geht nichts verloren.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="quiet">
+      <h2 style="margin-bottom:.4rem">Was die App nicht tut</h2>
+      <p style="margin:0;color:var(--muted)">Das ist keine Nebensache, sondern der Punkt.</p>
+      <ul>
+        <li>Kein Konto, keine Anmeldung, kein Server.</li>
+        <li>Keine Werbung, keine Analytik, kein Tracking, kein fremder Baustein.</li>
+        <li>Kein Netzwerkzugriff — die App läuft im Flugmodus.</li>
+        <li>Keine Links nach draussen, kein Kontakt zu anderen Nutzern.</li>
+        <li>Wörter, Fotos und Fortschritt bleiben auf dem iPad.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="price">
+    <h2>Was es kostet</h2>
+    <p class="amount">Fünf eigene Wörter gratis</p>
+    <p>
+      Die drei Startordner, alle vier Stufen, sämtliche Hilfen, der Fortschritt,
+      Sichern und Einlesen: kostenlos. Wer mehr als fünf eigene Wörter anlegen
+      möchte, schaltet sie mit einem einmaligen Kauf frei — kein Abonnement, mit
+      Familienfreigabe, hinter einer Rechenaufgabe für Erwachsene.
+    </p>
+  </section>
+
+  <footer>
+    <div>Tanok schreibt · Frank Reichenbach, Schweiz</div>
+    <nav>
+      <a href="support.html">Hilfe und Kontakt</a>
+      <a href="datenschutz.html">Datenschutz</a>
+    </nav>
+  </footer>
+
+</div>
 </body>
 </html>
