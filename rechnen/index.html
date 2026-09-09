@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tanok rechnet — Zahlen schreiben und rechnen</title>
+<meta name="description" content="Eine ruhige iPad-App: Ziffern mit dem Finger nachziehen, Punkte zählen, plus, minus und mal. Ohne Werbung, ohne Konto, ohne Internet.">
+<style>
+  /* Dieselben Farben wie in der App, damit Seite und Bildschirm zusammengehören.
+     Die dritte, warme Farbe gehört der dritten Tür: dem Zählen der Punkte. */
+  :root {
+    color-scheme: light dark;
+    --blue: #2f6fa8;
+    --teal: #2a9d8f;
+    --clay: #c4714b;
+    --ink: #1f2933;
+    --muted: #5b6773;
+    --ground: #f6f8fa;
+    --card: #ffffff;
+    --line: rgba(31, 41, 51, .12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #eef1f5;
+      --muted: #a3adba;
+      --ground: #14181d;
+      --card: #1c2128;
+      --line: rgba(238, 241, 245, .14);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font: 17px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 62rem; margin: 0 auto; padding: 0 1.25rem; }
+
+  header { padding: 4.5rem 0 3rem; text-align: center; }
+  .mark {
+    width: 84px; height: 84px; margin: 0 auto 1.5rem;
+    border-radius: 20px; display: grid; place-items: center;
+    background: linear-gradient(160deg, var(--blue), var(--clay));
+    color: #fff; font-size: 40px; font-weight: 800; letter-spacing: -.04em;
+  }
+  h1 { font-size: clamp(2.1rem, 6vw, 3rem); line-height: 1.1; margin: 0 0 .6rem; letter-spacing: -.02em; }
+  .claim { font-size: clamp(1.05rem, 2.6vw, 1.3rem); color: var(--muted); margin: 0 auto; max-width: 34rem; }
+  .badge {
+    display: inline-block; margin-top: 1.6rem; padding: .45rem 1rem;
+    border: 1px solid var(--line); border-radius: 999px;
+    font-size: .95rem; color: var(--muted);
+  }
+
+  section { padding: 3rem 0; }
+  h2 { font-size: 1.5rem; margin: 0 0 1.5rem; letter-spacing: -.01em; }
+
+  .shots {
+    display: grid; gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  }
+  figure { margin: 0; }
+  .shots img {
+    width: 100%; height: auto; display: block;
+    border-radius: 14px; border: 1px solid var(--line);
+    background: var(--card);
+  }
+  figcaption { margin-top: .7rem; font-size: .95rem; color: var(--muted); }
+
+  .doors { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+  .door {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 1.4rem; border-top: 4px solid var(--line);
+  }
+  .door.writing { border-top-color: var(--blue); }
+  .door.sums { border-top-color: var(--teal); }
+  .door.counting { border-top-color: var(--clay); }
+  .door h3 { margin: 0 0 .5rem; font-size: 1.08rem; }
+  .door p { margin: 0; color: var(--muted); font-size: .97rem; }
+
+  .points { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+  .point { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 1.4rem; }
+  .point h3 { margin: 0 0 .5rem; font-size: 1.08rem; }
+  .point p { margin: 0; color: var(--muted); font-size: .97rem; }
+
+  .quiet {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 1.6rem 1.75rem;
+  }
+  .quiet ul { margin: .8rem 0 0; padding-left: 1.15rem; color: var(--muted); }
+  .quiet li { margin: .35rem 0; }
+
+  .price { text-align: center; }
+  .price .amount { font-size: 2.2rem; font-weight: 700; letter-spacing: -.02em; }
+  .price p { color: var(--muted); max-width: 34rem; margin: .6rem auto 0; }
+
+  footer {
+    margin-top: 2rem; padding: 2.5rem 0 3.5rem;
+    border-top: 1px solid var(--line); color: var(--muted); font-size: .95rem;
+    display: flex; flex-wrap: wrap; gap: 1.25rem; justify-content: space-between;
+  }
+  footer a { color: var(--blue); }
+  @media (prefers-color-scheme: dark) { footer a { color: #6fb0e6; } }
+  footer nav { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <div class="mark">Ta</div>
+    <h1>Tanok rechnet</h1>
+    <p class="claim">
+      Eine Ziffer mit dem Finger nachziehen, die Punkte einer Zahl abzählen,
+      plus, minus und mal. Eine ruhige App fürs iPad, die nichts will ausser Üben.
+    </p>
+    <p class="badge">Für iPad · Deutsch, English, Español, Français, Italiano</p>
+  </header>
+
+  <section>
+    <div class="shots">
+      <figure>
+        <img src="img/01-rechnen.png" alt="Die Aufgabe 4 plus 1, beide Zahlen mit Punkten, zwei davon schon abgezählt." width="620" height="827">
+        <figcaption>Jede Zahl trägt ihre Punkte. Antippen, mitzählen, Ergebnis eintippen.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/02-nachziehen.png" alt="Eine 4 zur Hälfte nachgezogen, mit Startpunkt, Pfeil und Strichnummern." width="620" height="827">
+        <figcaption>Jede Ziffer wird nachgezogen — die Hilfe verblasst über vier Stufen.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/03-start.png" alt="Der Startbildschirm mit den drei Türen: Zahlen schreiben, Rechnen, Punkte zählen." width="620" height="827">
+        <figcaption>Drei Türen, nicht mehr. Ein Kind soll nichts suchen müssen.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/04-familienbereich.png" alt="Der Familienbereich mit den Rechenarten und den Einstellungen." width="620" height="827">
+        <figcaption>Für die Eltern, hinter einer Rechenaufgabe: was geübt wird und wie viel Hilfe es gibt.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>Drei Übungen, die zusammengehören</h2>
+    <div class="doors">
+      <div class="door writing">
+        <h3>Zahlen schreiben</h3>
+        <p>Eine Ziffer wird mit dem Finger oder dem Stift nachgezogen. Startpunkt,
+           Richtungspfeil, Strichnummern und zuletzt die Kontur selbst
+           verschwinden nach und nach — in der Reihenfolge, in der ein Kind sie
+           nicht mehr braucht.</p>
+      </div>
+      <div class="door sums">
+        <h3>Rechnen</h3>
+        <p>Plus, minus und mal, alle drei über dieselben Punkte: beim Plusrechnen
+           vorwärts über beide Zahlen, beim Minusrechnen rückwärts, beim
+           Malrechnen in Schritten. Die zuletzt gesagte Zahl ist die Antwort.</p>
+      </div>
+      <div class="door counting">
+        <h3>Punkte zählen</h3>
+        <p>Eine Zahl, ihre Punkte, und nichts, was danach auszurechnen wäre. Der
+           Schritt unter den beiden anderen: dass die Form „4“ vier Dinge
+           bedeutet und dass man das durch Zählen herausfindet.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Wie es funktioniert</h2>
+    <div class="points">
+      <div class="point">
+        <h3>Punkte, die man anfassen kann</h3>
+        <p>Bis fünf trägt jede Zahl einen Punkt je Einheit, ab sechs kommen
+           geringelte Punkte dazu, die doppelt zählen. Das Kind tippt sie der
+           Reihe nach an und die App zählt laut mit.</p>
+      </div>
+      <div class="point">
+        <h3>Vier Hilfestufen</h3>
+        <p>Von der vollen Kontur bis zur blossen Schreiblinie, von Punkten auf
+           jeder Zahl bis zu den nackten Ziffern. Jede Stufe lässt sich einzeln
+           einstellen.</p>
+      </div>
+      <div class="point">
+        <h3>Die Hilfe zieht sich zurück</h3>
+        <p>Wenn eine Ziffer an mehreren <em>verschiedenen</em> Tagen sauber sass,
+           gibt es beim nächsten Mal weniger Hilfe. Fünf Treffer in einer Minute
+           sind nicht dasselbe wie fünf Treffer an fünf Tagen.</p>
+      </div>
+      <div class="point">
+        <h3>Die Stufe gehört der Ziffer</h3>
+        <p>Eine 1 sitzt lange vor einer 8, und beide bleiben dort, wo sie
+           hingehören. Wer das nicht will, verschiebt jede Stufe von Hand.</p>
+      </div>
+      <div class="point">
+        <h3>Nichts, was drängt</h3>
+        <p>Keine Uhr, keine Punktzahl, kein Gegner, kein Verlieren. Ein falscher
+           Strich wackelt kurz und ist vorbei. Am Ende ein Feuerwerk — und wenn
+           das zu viel ist, schaltet man es aus.</p>
+      </div>
+      <div class="point">
+        <h3>Sichern und Einlesen</h3>
+        <p>Einstellungen und der ganze Fortschritt passen in eine Datei. Beim
+           Wechsel auf ein neues iPad geht nichts verloren.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="quiet">
+      <h2 style="margin-bottom:.4rem">Was die App nicht tut</h2>
+      <p style="margin:0;color:var(--muted)">Das ist keine Nebensache, sondern der Punkt.</p>
+      <ul>
+        <li>Kein Konto, keine Anmeldung, kein Server.</li>
+        <li>Keine Werbung, keine Analytik, kein Tracking, kein fremder Baustein.</li>
+        <li>Kein Netzwerkzugriff — die App läuft im Flugmodus.</li>
+        <li>Sie fragt nach keiner einzigen Berechtigung: kein Foto, keine Kamera,
+            kein Mikrofon.</li>
+        <li>Keine Links nach draussen, kein Kontakt zu anderen Nutzern.</li>
+        <li>Der Fortschritt bleibt auf dem iPad.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="price">
+    <h2>Was es kostet</h2>
+    <p class="amount">Alles bis sechs ist gratis</p>
+    <p>
+      Die Ziffern 0 bis 6 schreiben, die Punkte von 1 bis 6 zählen und jede
+      Aufgabe, die unter sieben bleibt: kostenlos, mit allen vier Stufen und
+      dem ganzen Fortschritt. Ein einmaliger Kauf fügt 7, 8 und 9 hinzu und den
+      Zahlenraum darüber — kein Abonnement, mit Familienfreigabe, hinter einer
+      Rechenaufgabe für Erwachsene.
+    </p>
+  </section>
+
+  <footer>
+    <div>Tanok rechnet · Frank Reichenbach, Schweiz</div>
+    <nav>
+      <a href="support.html">Hilfe und Kontakt</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="../">Tanok schreibt</a>
+    </nav>
+  </footer>
+
+</div>
+</body>
+</html>
