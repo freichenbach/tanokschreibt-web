@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tanok ordnet — was zuerst kommt und was danach</title>
+<meta name="description" content="Eine ruhige iPad-App: Schritte einer Folge der Reihe nach antippen. Eigene Folgen mit euren Fotos. Ohne Werbung, ohne Konto, ohne Internet.">
+<style>
+  /* Dieselben Farben wie in der App, damit Seite und Bildschirm zusammengehören.
+     Die dritte, warme Farbe gehört der dritten Tür: dem Zählen der Punkte. */
+  :root {
+    color-scheme: light dark;
+    --blue: #2f6fa8;
+    --teal: #2a9d8f;
+    --clay: #c4714b;
+    --ink: #1f2933;
+    --muted: #5b6773;
+    --ground: #f6f8fa;
+    --card: #ffffff;
+    --line: rgba(31, 41, 51, .12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #eef1f5;
+      --muted: #a3adba;
+      --ground: #14181d;
+      --card: #1c2128;
+      --line: rgba(238, 241, 245, .14);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font: 17px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 62rem; margin: 0 auto; padding: 0 1.25rem; }
+
+  header { padding: 4.5rem 0 3rem; text-align: center; }
+  .mark {
+    width: 84px; height: 84px; margin: 0 auto 1.5rem;
+    border-radius: 20px; display: grid; place-items: center;
+    background: linear-gradient(160deg, var(--blue), var(--clay));
+    color: #fff; font-size: 40px; font-weight: 800; letter-spacing: -.04em;
+  }
+  h1 { font-size: clamp(2.1rem, 6vw, 3rem); line-height: 1.1; margin: 0 0 .6rem; letter-spacing: -.02em; }
+  .claim { font-size: clamp(1.05rem, 2.6vw, 1.3rem); color: var(--muted); margin: 0 auto; max-width: 34rem; }
+  .badge {
+    display: inline-block; margin-top: 1.6rem; padding: .45rem 1rem;
+    border: 1px solid var(--line); border-radius: 999px;
+    font-size: .95rem; color: var(--muted);
+  }
+
+  section { padding: 3rem 0; }
+  h2 { font-size: 1.5rem; margin: 0 0 1.5rem; letter-spacing: -.01em; }
+
+  .shots {
+    display: grid; gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  }
+  figure { margin: 0; }
+  .shots img {
+    width: 100%; height: auto; display: block;
+    border-radius: 14px; border: 1px solid var(--line);
+    background: var(--card);
+  }
+  figcaption { margin-top: .7rem; font-size: .95rem; color: var(--muted); }
+
+  .doors { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+  .door {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 1.4rem; border-top: 4px solid var(--line);
+  }
+  .door.writing { border-top-color: var(--blue); }
+  .door.sums { border-top-color: var(--teal); }
+  .door.counting { border-top-color: var(--clay); }
+  .door h3 { margin: 0 0 .5rem; font-size: 1.08rem; }
+  .door p { margin: 0; color: var(--muted); font-size: .97rem; }
+
+  .points { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+  .point { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 1.4rem; }
+  .point h3 { margin: 0 0 .5rem; font-size: 1.08rem; }
+  .point p { margin: 0; color: var(--muted); font-size: .97rem; }
+
+  .quiet {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 1.6rem 1.75rem;
+  }
+  .quiet ul { margin: .8rem 0 0; padding-left: 1.15rem; color: var(--muted); }
+  .quiet li { margin: .35rem 0; }
+
+  .price { text-align: center; }
+  .price .amount { font-size: 2.2rem; font-weight: 700; letter-spacing: -.02em; }
+  .price p { color: var(--muted); max-width: 34rem; margin: .6rem auto 0; }
+
+  footer {
+    margin-top: 2rem; padding: 2.5rem 0 3.5rem;
+    border-top: 1px solid var(--line); color: var(--muted); font-size: .95rem;
+    display: flex; flex-wrap: wrap; gap: 1.25rem; justify-content: space-between;
+  }
+  footer a { color: var(--blue); }
+  @media (prefers-color-scheme: dark) { footer a { color: #6fb0e6; } }
+  footer nav { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <div class="mark">Ta</div>
+    <h1>Tanok ordnet</h1>
+    <p class="claim">
+      Alle Schritte liegen gemischt da — der Reihe nach antippen. Eine ruhige
+      App fürs iPad, die eine einzige Sache übt: was zuerst kommt und was danach.
+    </p>
+    <p class="badge">Für iPad · Deutsch, English, Español, Français, Italiano</p>
+  </header>
+
+  <!-- Die Bildschirmfotos kommen hierher, sobald sie auf dem iPad entstanden
+       sind. Struktur wie bei der Schwester-App: <section><div class="shots">
+       mit vier <figure>. -->
+
+  <section>
+    <h2>Eine Übung, und die richtige</h2>
+    <div class="points">
+      <div class="point">
+        <h3>Die ganze Folge im Kopf</h3>
+        <p>Alle Schritte einer Folge liegen gemischt da. Ein Schritt zur rechten
+           Zeit rutscht nach oben auf seinen Platz; einer ausser der Reihe
+           wackelt kurz und bleibt liegen. Nichts wird weggenommen, nichts
+           gesperrt — die Runde lässt sich immer zu Ende bringen.</p>
+      </div>
+      <div class="point">
+        <h3>Das Wort, die Nummer, die Stimme</h3>
+        <p>Auf der ersten Stufe stehen drei Schritte da, die Plätze tragen ihre
+           Nummer, unter jedem Bild steht sein Wort, und die App sagt den
+           nächsten Schritt von allein an. Auf der vierten sind es sechs
+           Schritte und nichts davon — bis das Kind den Lautsprecher drückt.</p>
+      </div>
+      <div class="point">
+        <h3>Die Hilfe zieht sich zurück</h3>
+        <p>Wenn eine Folge an mehreren <em>verschiedenen</em> Tagen richtig lag,
+           gibt es beim nächsten Mal weniger Hilfe. Fünf Treffer in einer Minute
+           sind nicht dasselbe wie fünf Treffer an fünf Tagen. Wie viel es
+           braucht, stellen Sie ein — oder Sie setzen die Stufe von Hand.</p>
+      </div>
+      <div class="point">
+        <h3>Die Stufe gehört der Folge</h3>
+        <p>Nicht dem einzelnen Schritt. Anders als bei Buchstaben und Ziffern,
+           die man einzeln übt: Eine Folge ist die Einheit, die ein Kind kann
+           oder nicht kann.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Sechs Folgen zum Anfangen</h2>
+    <p class="claim" style="margin-bottom:1.5rem">
+      Zähne putzen, Anziehen, Brot streichen, Tasche packen, Hände waschen — und
+      die Feuerwehr, die ein Haus löscht. Dreissig eigene Zeichnungen im
+      Kinderbuchstil, in allen fünf Sprachen dieselben Bilder.
+    </p>
+  </section>
+
+  <section>
+    <h2>Und dann eure eigenen, mit euren Fotos</h2>
+    <div class="points">
+      <div class="point">
+        <h3>Sein Badezimmer, seine Zahnbürste</h3>
+        <p>Darin liegt der eigentliche Wert. Im Familienbereich eine Folge
+           anlegen, die Schritte fotografieren oder aus der Mediathek nehmen, in
+           die richtige Reihenfolge ziehen, fertig. Wer nicht fotografieren mag,
+           nimmt eine der mitgelieferten Zeichnungen.</p>
+      </div>
+      <div class="point">
+        <h3>Eine Folge muss eine echte Reihenfolge sein</h3>
+        <p>Jeder Schritt muss erst möglich sein, wenn der davor passiert ist.
+           Zwei Schritte, die man tauschen könnte, ohne dass es jemandem
+           auffiele, gehören nicht in dieselbe Folge — das Kind, das sie
+           andersherum legt, hat recht. Der Familienbereich schreibt das genau
+           dorthin, wo Sie eine Folge bauen.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Was die App nicht tut</h2>
+    <div class="points">
+      <div class="point">
+        <h3>Nichts verlässt das iPad</h3>
+        <p>Keine Werbung, keine Analytik, kein Konto, kein Netzwerkzugriff, kein
+           Kontakt zu anderen Nutzern. Die Fotos liegen im privaten Bereich der
+           App. Die einzige Erlaubnis, nach der je gefragt wird, ist die Kamera
+           — und nur dann, wenn Sie selbst fotografieren wollen.</p>
+      </div>
+      <div class="point">
+        <h3>Kein Zeitdruck, keine Punktzahl</h3>
+        <p>Nichts zu verlieren. Am Ende Feuerwerk, Figuren zum Herumschieben und
+           ein Lob — und wenn das zu viel ist, schalten Sie es aus. Die
+           Bedienungshilfe „Bewegung reduzieren“ des iPads schaltet die Bewegung
+           von sich aus ab.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Was es kostet</h2>
+    <p class="claim" style="margin-bottom:0">
+      Die sechs Folgen, alle vier Stufen, sämtliche Hilfen, der Fortschritt,
+      Sichern und Einlesen: gratis. Fünf eigene Folgen ebenso. Darüber hinaus
+      schaltet ein einmaliger Kauf beliebig viele frei — kein Abonnement, und
+      der Kauf liegt hinter einer Rechenaufgabe für Erwachsene.
+    </p>
+  </section>
+
+  <footer>
+    <div>Tanok ordnet · Frank Reichenbach, Schweiz</div>
+    <nav>
+      <a href="support.html">Hilfe und Kontakt</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="../">Tanok schreibt</a>
+      <a href="../rechnen/">Tanok rechnet</a>
+    </nav>
+  </footer>
+
+</div>
+</body>
+</html>
